@@ -1,0 +1,21 @@
+# Back-end
+backend/target/
+*.class
+
+# Front-end
+frontend/node_modules/
+frontend/dist/
+frontend/coverage/
+*.tsbuildinfo
+
+# Ferramentas e sistema
+.idea/
+*.iml
+.DS_Store
+Thumbs.db
+*.log
+
+# Segredos locais — nunca versione tokens ou senhas
+.env
+.env.*
+!.env.exemplo

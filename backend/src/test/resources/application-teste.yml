@@ -1,0 +1,11 @@
+# Perfil "teste": usado pelos testes de aceitação (anotação @TesteDeAceitacao).
+# Usa um banco separado (connexa_teste), recriado a cada execução da suíte,
+# para que os testes nunca dependam dos dados do banco de desenvolvimento.
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${CONNEXA_DB_HOST:localhost}:${CONNEXA_DB_PORTA:5432}/${CONNEXA_DB_TESTE:connexa_teste}
+
+  flyway:
+    # Permite que BancoDeTesteLimpo apague e recrie os schemas antes da suíte.
+    clean-disabled: false

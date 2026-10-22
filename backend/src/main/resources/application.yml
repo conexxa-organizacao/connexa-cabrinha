@@ -1,0 +1,64 @@
+# Configuração do back-end do Connexa.
+# Os valores ${VARIAVEL:padrao} podem ser trocados por variáveis de ambiente.
+# Os padrões funcionam com o PostgreSQL do docker-compose.yml e do Codespaces.
+
+spring:
+  application:
+    name: connexa
+
+  datasource:
+    url: jdbc:postgresql://${CONNEXA_DB_HOST:localhost}:${CONNEXA_DB_PORTA:5432}/${CONNEXA_DB_NOME:connexa}
+    username: ${CONNEXA_DB_USUARIO:connexa}
+    password: ${CONNEXA_DB_SENHA:connexa}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      # O esquema do banco é criado SOMENTE pelas migrações do Flyway.
+      # O Hibernate apenas confere se as entidades batem com as tabelas.
+      ddl-auto: validate
+
+  flyway:
+    # Um schema por módulo: cada módulo é dono dos seus dados.
+    # O primeiro (public) guarda o histórico de migrações do Flyway.
+    schemas:
+      - public
+      - identidade
+      - perfil
+      - grupos
+      - encontros
+      - acompanhamento
+      - painel
+      - materiais
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+  error:
+    include-stacktrace: never
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+connexa:
+  versao: '@project.version@'
+
+  identidade:
+    simulacao:
+      # Estudantes fictícios usados enquanto a autenticação real não existe.
+      # O primeiro é o padrão; os outros são escolhidos pelo cabeçalho
+      # X-Connexa-Usuario-Simulado: <chave>.
+      usuarios:
+        - chave: alice
+          id: 00000000-0000-0000-0000-00000000a11c
+          nome: Alice Prado
+          email: alice.prado@instituicao.example
+        - chave: bento
+          id: 00000000-0000-0000-0000-00000000be70
+          nome: Bento Ramos
+          email: bento.ramos@instituicao.example
+        - chave: cecilia
+          id: 00000000-0000-0000-0000-0000000ce011
+          nome: Cecília Torres
+          email: cecilia.torres@instituicao.example
